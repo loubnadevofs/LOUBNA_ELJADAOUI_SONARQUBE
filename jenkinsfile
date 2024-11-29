@@ -1,0 +1,53 @@
+pipeline {
+    agent any
+
+    environment {
+        SONAR_TOKEN = 'votre-sonar-token'  // Remplacez par votre token SonarQube
+        GITHUB_TOKEN = 'votre-github-token' // Remplacez par votre token GitHub
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                // Récupérer le code depuis GitHub
+                git branch: 'main', url: 'https://github.com/username/repository.git'
+            }
+        }
+
+        stage('Install Dependencies') {
+            steps {
+                // Installer les dépendances du projet Node.js
+                script {
+                    sh 'npm install'
+                }
+            }
+        }
+
+        stage('Run Tests') {
+            steps {
+                // Exécuter les tests définis dans le package.json
+                script {
+                    sh 'npm test'
+                }
+            }
+        }
+
+        stage('SonarQube Analysis') {
+            steps {
+                // Analyser le code avec SonarQube
+                script {
+                    withSonarQubeEnv('SonarQube') {
+                        sh 'mvn sonar:sonar'
+                    }
+                }
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                // Déployer l'application (vous pouvez personnaliser cette étape)
+                echo 'Déploiement de l’application'
+            }
+        }
+    }
+}
