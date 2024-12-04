@@ -1,20 +1,14 @@
-stage('Code Analysis') {
-    environment {
-        scannerHome = tool 'SonarQube' 
-    }
-    steps {
-        script {
-            withSonarQubeEnv('Tp_Jen_Son') { 
-                sh """
-                    ${scannerHome}/bin/sonar-scanner \
-                        -Dsonar.projectKey=Jenkins_learning \
-                        -Dsonar.projectName=Jenkins_learning \
-                        -Dsonar.projectVersion=1.0 \
-                        -Dsonar.sources=src \
-                        -Dsonar.branch.name=main
-                """
-            }
-        }
-    }
-}
+pipeline{
+   agent none
+   stages{
+           stage("Buil & SonarQube Analysis")
+agent any{
+     steps{
+             withSonarQubeEnv("Tp_Jen_Son"){
+                 sh 'mvn clean package sonar:sonar'
 
+             }
+      }
+ }
+}
+}
