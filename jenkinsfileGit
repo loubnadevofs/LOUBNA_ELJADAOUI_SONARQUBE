@@ -1,14 +1,11 @@
-pipeline{
-   agent none
-   stages{
-           stage("Buil & SonarQube Analysis")
-agent any{
-     steps{
-             withSonarQubeEnv("Tp_Jen_Son"){
-                 sh 'mvn clean package sonar:sonar'
+stage('SonarQube Analysis') {
+    steps {
+        script {
+            // Analyser avec SonarQube
+            withSonarQubeEnv("Tp_Jen_Son"){
+                sh 'npm run sonar'
+            }
+        }
+    }
+}
 
-             }
-      }
- }
-}
-}
